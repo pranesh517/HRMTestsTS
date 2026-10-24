@@ -1,6 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test";
 
 
+export type User = {
+    username: string,
+    password: string
+}
+
 export class LoginPage {
 
     private readonly page: Page;
@@ -33,10 +38,16 @@ export class LoginPage {
     }
 
     private async clickOnLoginButton() {
-        await this.loginButton.click()
+        await this.loginButton.click({timeout: 3000})
     }
 
-    async loginToOrangeHrm(username: string, password: string) {
+    async loginToOrangeHrm(userCredentials: User) {
+        await this.enterUserName(userCredentials.username)
+        await this.enterPassword(userCredentials.password)
+        await this.clickOnLoginButton()
+    }
+
+    async loginToOrangeHrmUsingCreds(username: string, password:string) {
         await this.enterUserName(username)
         await this.enterPassword(password)
         await this.clickOnLoginButton()
